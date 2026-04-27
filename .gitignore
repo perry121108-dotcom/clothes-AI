@@ -1,0 +1,40 @@
+# ── 環境變數（絕對不可上傳）──
+.env
+
+# ── 生成輸出（每日圖片、lock、工作報告）──
+output/
+
+# ── API 快取（本機暫存）──
+cache/
+
+# ── Python 編譯快取 ──
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+
+# ── 虛擬環境 ──
+.venv/
+venv/
+env/
+
+# ── 系統檔案 ──
+.DS_Store
+Thumbs.db
+
+# ── IDE ──
+.vscode/
+.idea/
+
+# ── 暫存媒體檔案 ──
+*.mp3
+*.mp4
+
+# ── 音樂版權（已核准的音樂檔案不上傳）──
+assets/music/approved/
+
+# ── 獨立子專案（有自己的 git）──
+ai_sop_toolkit/

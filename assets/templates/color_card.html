@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=1080"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+      font-family: 'PingFang SC', 'Microsoft YaHei', '微软雅黑', 'Noto Sans SC', sans-serif;
+    }
+
+    .bg {
+      width: 1080px;
+      height: 1920px;
+      /* 背景：三色混合深色漸層，模仿截圖的暈染效果 */
+      background:
+        radial-gradient(ellipse 900px 600px at 50% 20%, {{ top_bg }} 0%, transparent 70%),
+        radial-gradient(ellipse 900px 700px at 50% 60%, {{ mid_bg }} 0%, transparent 70%),
+        radial-gradient(ellipse 900px 600px at 50% 95%, {{ bot_bg }} 0%, transparent 70%),
+        #111111;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* 組號指示器 */
+    .group-indicator {
+      position: absolute;
+      top: 80px;
+      width: 100%;
+      text-align: center;
+      font-size: 28px;
+      font-weight: 300;
+      letter-spacing: 0.4em;
+      color: rgba(255, 255, 255, 0.35);
+    }
+
+    /* 中央色條卡 */
+    .card-inner {
+      width: 900px;
+      height: 1400px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border-radius: 8px;
+    }
+
+    .strip {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .strip-top { height: 420px; background: {{ top_hex }}; }
+    .strip-mid { height: 560px; background: {{ mid_hex }}; }
+    .strip-bot { height: 420px; background: {{ bot_hex }}; }
+
+    .strip-label {
+      font-size: 58px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .strip-top  .strip-label { color: {{ top_text }}; }
+    .strip-mid  .strip-label { color: {{ mid_text }}; }
+    .strip-bot  .strip-label { color: {{ bot_text }}; }
+
+    /* 底部風格標籤 */
+    .style-tag {
+      position: absolute;
+      bottom: 80px;
+      width: 100%;
+      text-align: center;
+      font-size: 30px;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      color: rgba(255, 255, 255, 0.4);
+    }
+  </style>
+</head>
+<body>
+  <div class="bg">
+    <div class="group-indicator">{{ group_id }} / {{ total_groups }}</div>
+
+    <div class="card-inner">
+      <div class="strip strip-top">
+        <span class="strip-label">{{ top_name }}【{{ top_type }}】</span>
+      </div>
+      <div class="strip strip-mid">
+        <span class="strip-label">{{ mid_name }}【{{ mid_type }}】</span>
+      </div>
+      <div class="strip strip-bot">
+        <span class="strip-label">{{ bot_name }}【{{ bot_type }}】</span>
+      </div>
+    </div>
+
+    <div class="style-tag">{{ style_tag }}</div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "_instructions": [
+    "1. 從 YouTube Audio Library / Epidemic Sound / Pixabay 下載版權釋放音樂",
+    "2. 將 MP3 放入 assets/music/approved/ 資料夾",
+    "3. 在下方 tracks 陣列中新增一筆登記",
+    "4. mood 必須為：energetic / chill / romantic / upbeat / dramatic 之一",
+    "5. 每首音樂需人工確認授權後才可加入"
+  ],
+  "mood_bpm_reference": {
+    "energetic": "120-140 BPM",
+    "upbeat":    "100-120 BPM",
+    "dramatic":  "90-115 BPM",
+    "chill":     "70-95 BPM",
+    "romantic":  "60-85 BPM"
+  },
+  "tracks": []
+}
