@@ -1,167 +1,153 @@
-# 每日 AI 穿搭圖片生成器 / Daily AI Outfit Image Generator
+﻿# clothes AI
 
-> 每天自動生成 2 組男生配色穿搭，產出色塊卡片與 AI 人形模特穿搭照，並透過 Telegram 傳送。  
-> Automatically generates 2 men's outfit color combinations daily — producing color cards and AI mannequin photos — then delivers them via Telegram.
+一個以 AI 自動化生成穿搭內容為核心的工作流專案。  
+目前主展示方向為「每日穿搭圖片生成 + Telegram 自動交付」，並保留早期短影音生成成果作為功能演進證據。
 
----
+## 專案定位
 
-## 目錄 / Table of Contents
+`clothes AI` 是作品集中的 AI 自動化展示專案，重點不是單一模型本身，而是整個工作流：
 
-- [功能說明 / Features](#功能說明--features)
-- [輸出範例 / Output](#輸出範例--output)
-- [系統架構 / Architecture](#系統架構--architecture)
-- [安裝與設定 / Setup](#安裝與設定--setup)
-- [執行方式 / Usage](#執行方式--usage)
-- [環境變數 / Environment Variables](#環境變數--environment-variables)
-- [專案結構 / Project Structure](#專案結構--project-structure)
+1. 讀取天氣、流行資訊與節慶條件
+2. 由 AI 生成穿搭組合
+3. 產出穿搭色卡與 AI 模特圖
+4. 自動傳送到 Telegram
 
----
+## 專案方向演進
 
-## 功能說明 / Features
+這個專案一開始的目標其實是「短影音自動化生成」。
 
-**中文**
+後來因為影片 API 成本較高，為了讓流程能更穩定、可持續、可控制成本，主展示方向改為：
 
-- 即時抓取台北天氣（OpenWeatherMap API）
-- 擷取當前流行趨勢與節慶資訊
-- 呼叫 Gemini AI 生成 2 組協調配色穿搭方案（上衣 / 下裝 / 鞋子）
-- 使用 Playwright 渲染 Douyin 風格色塊卡片（含顏色名稱與衣物類別文字標籤）
-- 使用 Gemini Image 生成全白無臉人形模特穿搭照
-- 自動以媒體相簿形式傳送 4 張圖片至 Telegram
-- 冪等性設計：同一天重複執行會自動跳過，不重複發送
+- 以圖片生成為主
+- 保留影片輸出作為曾經做過的功能證據
 
-**English**
+這代表專案不是縮水，而是做過實驗後，基於成本與實用性作出的產品調整。
 
-- Fetches real-time weather data for Taipei via OpenWeatherMap API
-- Retrieves current fashion trends and festival information
-- Calls Gemini AI to generate 2 coordinated outfit color combinations (top / bottom / shoes)
-- Renders Douyin-style color strip cards via Playwright (with color name and clothing type labels)
-- Generates full-body AI mannequin outfit photos via Gemini Image (featureless white form, studio background)
-- Automatically sends 4 images as a Telegram media album
-- Idempotent by design: re-running on the same day is safely skipped
+## 展示畫面
 
----
+### AI 穿搭色卡
 
-## 輸出範例 / Output
+![AI 穿搭色卡 1](assets/github/generated/outfit-card-1.png)
 
-每次執行產出 **4 張圖片**，傳送至 Telegram：
+![AI 穿搭色卡 2](assets/github/generated/outfit-card-2.png)
 
-| 圖片 | 說明 |
-|------|------|
-| `card_1.png` | 第 1 組色塊卡片（顏色名稱 + 衣物類別） |
-| `photo_1.png` | 第 1 組 AI 人形模特穿搭照 |
-| `card_2.png` | 第 2 組色塊卡片 |
-| `photo_2.png` | 第 2 組 AI 人形模特穿搭照 |
+### AI 穿搭人物圖
 
----
+![AI 穿搭人物圖 1](assets/github/generated/outfit-photo-1.png)
 
-## 系統架構 / Architecture
+![AI 穿搭人物圖 2](assets/github/generated/outfit-photo-2.png)
 
+### Telegram 交付畫面
+
+Telegram 截圖素材已在 Google Drive `Clothes ai` 同名資料夾中定位，候選檔案為 `IMG_4209.PNG`、`IMG_4210.PNG`、`IMG_4211.PNG`。待取得可直接下載的圖片本體後，會放入 `assets/github/telegram/` 並嵌入此區塊。
+
+## 目前展示證據
+
+### 圖片輸出
+
+以下素材已整理到 repo：
+
+- `assets/github/generated/outfit-card-1.png`
+- `assets/github/generated/outfit-card-2.png`
+- `assets/github/generated/outfit-photo-1.png`
+- `assets/github/generated/outfit-photo-2.png`
+
+### 影片證據
+
+早期短影音成果保留於：
+
+- `assets/github/video/sample-short-video.mp4`
+
+### 原始輸出
+
+原始每日輸出仍保留於：
+
+- `output/`
+
+## 技術組成
+
+- Python
+- Playwright
+- Google Gemini API
+- OpenWeatherMap API
+- Telegram Bot API
+- Jinja2
+- pytest
+
+## 核心功能
+
+- 根據天氣與條件生成穿搭內容
+- 產生色卡圖片
+- 產生 AI 穿搭人物圖片
+- 將結果自動傳送到 Telegram
+- 支援重跑保護，避免同日重複輸出
+
+## 專案結構
+
+```text
+clothes AI/
+├─ main.py
+├─ requirements.txt
+├─ .env.example
+├─ output/
+├─ assets/
+│  ├─ templates/
+│  └─ github/
+│     ├─ generated/
+│     ├─ telegram/
+│     └─ video/
+├─ src/
+│  ├─ data_layer/
+│  ├─ brain_layer/
+│  ├─ render_layer/
+│  └─ delivery_layer/
+└─ tests/
 ```
-main.py
-├── Data Layer      — 天氣 / 趨勢 / 節慶資料抓取
-├── Brain Layer     — Gemini AI 生成 2 組配色 JSON
-├── Render Layer
-│   ├── renderer.py              — Playwright 色塊卡片 PNG
-│   └── outfit_photo_generator.py — Gemini Image 穿搭照 PNG
-└── Delivery Layer  — Telegram send_media_group（4 張）
-```
 
----
-
-## 安裝與設定 / Setup
-
-**需求 / Requirements**
-
-- Python 3.12+
-- [Playwright](https://playwright.dev/python/) Chromium（`playwright install chromium`）
-- 有效的 API Key：Gemini、OpenWeatherMap、Telegram Bot
-
-**步驟 / Steps**
+## 安裝方式
 
 ```bash
-# 1. Clone 專案
-git clone https://github.com/your-username/clothes-ai.git
-cd clothes-ai
-
-# 2. 安裝依賴
 pip install -r requirements.txt
-
-# 3. 安裝 Playwright 瀏覽器
 playwright install chromium
-
-# 4. 建立 .env
-cp .env.example .env
-# 編輯 .env，填入真實 API Key
 ```
 
----
-
-## 執行方式 / Usage
+## 執行方式
 
 ```bash
 python main.py
 ```
 
-執行後 Telegram 會收到 4 張圖片（2 色卡 + 2 穿搭照）。  
-After running, Telegram receives 4 images (2 color cards + 2 outfit photos).
-
-**重新生成（刪除今日 Lock）/ Force re-run**
-
-```bash
-# 刪除今日 lock 檔案即可重新生成
-del output\YYYY-MM-DD.lock
-python main.py
-```
-
-**測試 / Run Tests**
+## 測試方式
 
 ```bash
 python -m pytest --tb=short -q
 ```
 
----
+## 環境變數
 
-## 環境變數 / Environment Variables
+請參考 `.env.example`，主要包含：
 
-複製 `.env.example` 為 `.env` 並填入以下值：
+- `GEMINI_API_KEY`
+- `OPENWEATHER_API_KEY`
+- `DEFAULT_CITY`
+- `TELEGRAM_BOT_TOKEN`
+- `TELEGRAM_CHAT_ID`
 
-| 變數 | 說明 | 取得方式 |
-|------|------|---------|
-| `GEMINI_API_KEY` | Google Gemini API Key | [Google AI Studio](https://aistudio.google.com/) |
-| `OPENWEATHER_API_KEY` | 天氣 API Key | [OpenWeatherMap](https://openweathermap.org/api) |
-| `DEFAULT_CITY` | 預設城市（預設 `Taipei`） | 直接填入 |
-| `TELEGRAM_BOT_TOKEN` | Telegram Bot Token | [@BotFather](https://t.me/BotFather) |
-| `TELEGRAM_CHAT_ID` | 接收訊息的 Chat ID | [@userinfobot](https://t.me/userinfobot) |
+## GitHub 展示重點
 
----
+這個專案在 GitHub 上應該傳達三件事：
 
-## 專案結構 / Project Structure
+1. 你做的是「AI 自動化工作流」，不是只有單次圖片生成
+2. 專案曾經做到影片生成，後來因成本控制改為圖片主展示
+3. 這個流程有實際輸出、有證據、有交付場景
 
-```
-clothes-ai/
-├── main.py                          # 主程式入口
-├── requirements.txt                 # Python 依賴
-├── .env.example                     # 環境變數範本
-├── assets/
-│   └── templates/
-│       └── color_card.html          # Douyin 色塊卡片 HTML 模板
-├── src/
-│   ├── data_layer/
-│   │   ├── weather.py               # 天氣資料（OpenWeatherMap）
-│   │   ├── trends.py                # 流行趨勢
-│   │   └── festivals.py             # 節慶資訊
-│   ├── brain_layer/
-│   │   └── outfit_generator.py      # Gemini AI 配色生成
-│   ├── render_layer/
-│   │   ├── renderer.py              # Playwright 色塊卡片渲染
-│   │   └── outfit_photo_generator.py # Gemini Image 穿搭照生成
-│   └── delivery_layer/
-│       └── telegram_bot.py          # Telegram 傳送
-└── tests/                           # 單元測試（65 個，全數通過）
-```
+## 待補強項目
 
----
+- Telegram 接收畫面截圖整理到 `assets/github/telegram/`
+- README 中加入展示圖片區塊
+- 補上 CI / 執行驗證資訊
 
-## 授權 / License
+## License
 
-MIT License
+MIT
+
