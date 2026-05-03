@@ -1,77 +1,70 @@
-﻿# clothes AI
+# clothes AI
 
-一個以 AI 自動化生成穿搭內容為核心的工作流專案。  
+[![CI](https://github.com/perry121108-dotcom/clothes-AI/actions/workflows/ci.yml/badge.svg)](https://github.com/perry121108-dotcom/clothes-AI/actions/workflows/ci.yml)
+
+`clothes AI` is an AI automation workflow that generates daily outfit content, renders visual assets, and delivers the result through Telegram.
+
 目前主展示方向為「每日穿搭圖片生成 + Telegram 自動交付」，並保留早期短影音生成成果作為功能演進證據。
 
-## 專案定位
+## Project Positioning
 
-`clothes AI` 是作品集中的 AI 自動化展示專案，重點不是單一模型本身，而是整個工作流：
+This project is not just a single image generation script. It demonstrates an end-to-end automation workflow:
 
-1. 讀取天氣、流行資訊與節慶條件
-2. 由 AI 生成穿搭組合
-3. 產出穿搭色卡與 AI 模特圖
-4. 自動傳送到 Telegram
+1. Read weather, trend, and seasonal conditions.
+2. Generate outfit combinations with AI.
+3. Render outfit cards and AI model images.
+4. Deliver the result through Telegram.
 
-## 專案方向演進
+## Product Direction
 
-這個專案一開始的目標其實是「短影音自動化生成」。
+The project originally explored short-video generation. Because video API costs were higher and less predictable, the main portfolio path was repositioned into a sustainable image-first workflow.
 
-後來因為影片 API 成本較高，為了讓流程能更穩定、可持續、可控制成本，主展示方向改為：
+This shows a product decision: preserve video output as evidence of experimentation, but focus the live demo on a repeatable and lower-cost automation loop.
 
-- 以圖片生成為主
-- 保留影片輸出作為曾經做過的功能證據
+## Showcase
 
-這代表專案不是縮水，而是做過實驗後，基於成本與實用性作出的產品調整。
+### Outfit Cards
 
-## 展示畫面
+![AI outfit card 1](assets/github/generated/outfit-card-1.png)
 
-### AI 穿搭色卡
+![AI outfit card 2](assets/github/generated/outfit-card-2.png)
 
-![AI 穿搭色卡 1](assets/github/generated/outfit-card-1.png)
+### AI Outfit Images
 
-![AI 穿搭色卡 2](assets/github/generated/outfit-card-2.png)
+![AI outfit image 1](assets/github/generated/outfit-photo-1.png)
 
-### AI 穿搭人物圖
+![AI outfit image 2](assets/github/generated/outfit-photo-2.png)
 
-![AI 穿搭人物圖 1](assets/github/generated/outfit-photo-1.png)
+### Telegram Delivery
 
-![AI 穿搭人物圖 2](assets/github/generated/outfit-photo-2.png)
+![Telegram delivery 1](assets/github/telegram/telegram-delivery-1.png)
 
-### Telegram 交付畫面
+![Telegram delivery 2](assets/github/telegram/telegram-delivery-2.png)
 
-![Telegram 交付畫面 1](assets/github/telegram/telegram-delivery-1.png)
+![Telegram delivery 3](assets/github/telegram/telegram-delivery-3.png)
 
-![Telegram 交付畫面 2](assets/github/telegram/telegram-delivery-2.png)
+## Evidence
 
-![Telegram 交付畫面 3](assets/github/telegram/telegram-delivery-3.png)
+Generated portfolio assets:
 
-## 目前展示證據
+```text
+assets/github/generated/outfit-card-1.png
+assets/github/generated/outfit-card-2.png
+assets/github/generated/outfit-photo-1.png
+assets/github/generated/outfit-photo-2.png
+assets/github/telegram/telegram-delivery-1.png
+assets/github/telegram/telegram-delivery-2.png
+assets/github/telegram/telegram-delivery-3.png
+assets/github/video/sample-short-video.mp4
+```
 
-### 圖片輸出
+Raw daily outputs are preserved in:
 
-以下素材已整理到 repo：
+```text
+output/
+```
 
-- `assets/github/generated/outfit-card-1.png`
-- `assets/github/generated/outfit-card-2.png`
-- `assets/github/generated/outfit-photo-1.png`
-- `assets/github/generated/outfit-photo-2.png`
-- `assets/github/telegram/telegram-delivery-1.png`
-- `assets/github/telegram/telegram-delivery-2.png`
-- `assets/github/telegram/telegram-delivery-3.png`
-
-### 影片證據
-
-早期短影音成果保留於：
-
-- `assets/github/video/sample-short-video.mp4`
-
-### 原始輸出
-
-原始每日輸出仍保留於：
-
-- `output/`
-
-## 技術組成
+## Tech Stack
 
 - Python
 - Playwright
@@ -80,16 +73,18 @@
 - Telegram Bot API
 - Jinja2
 - pytest
+- GitHub Actions
 
-## 核心功能
+## Core Features
 
-- 根據天氣與條件生成穿搭內容
-- 產生色卡圖片
-- 產生 AI 穿搭人物圖片
-- 將結果自動傳送到 Telegram
-- 支援重跑保護，避免同日重複輸出
+- Generate outfit content from weather and prompt inputs.
+- Render outfit color cards.
+- Generate AI outfit images.
+- Deliver results to Telegram.
+- Prevent duplicate same-day output.
+- Keep generated outputs for portfolio review and QA.
 
-## 專案結構
+## Project Structure
 
 ```text
 clothes AI/
@@ -111,50 +106,93 @@ clothes AI/
 └─ tests/
 ```
 
-## 安裝方式
+## Setup
 
 ```bash
 pip install -r requirements.txt
 playwright install chromium
 ```
 
-## 執行方式
+Create `.env` from `.env.example` and fill in the required API keys:
+
+```text
+GEMINI_API_KEY=
+OPENWEATHER_API_KEY=
+DEFAULT_CITY=
+TELEGRAM_BOT_TOKEN=
+TELEGRAM_CHAT_ID=
+```
+
+## Run
 
 ```bash
 python main.py
 ```
 
-## 測試方式
+## Test
 
 ```bash
 python -m pytest --tb=short -q
 ```
 
-## 環境變數
+Verified result:
 
-請參考 `.env.example`，主要包含：
+```text
+65 passed
+```
 
-- `GEMINI_API_KEY`
-- `OPENWEATHER_API_KEY`
-- `DEFAULT_CITY`
-- `TELEGRAM_BOT_TOKEN`
-- `TELEGRAM_CHAT_ID`
+## Automation Schedule
 
-## GitHub 展示重點
+This workflow can run daily through:
 
-這個專案在 GitHub 上應該傳達三件事：
+- local cron
+- cloud VM cron
+- GitHub Actions schedule
 
-1. 你做的是「AI 自動化工作流」，不是只有單次圖片生成
-2. 專案曾經做到影片生成，後來因成本控制改為圖片主展示
-3. 這個流程有實際輸出、有證據、有交付場景
+GitHub Actions schedule example:
 
-## 待補強項目
+```yaml
+name: Daily Outfit Automation
 
-- Telegram 接收畫面截圖整理到 `assets/github/telegram/`
-- README 中加入展示圖片區塊
-- 補上 CI / 執行驗證資訊
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  daily-outfit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements.txt
+      - run: python -m playwright install chromium
+      - run: python main.py
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENWEATHER_API_KEY: ${{ secrets.OPENWEATHER_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+```
+
+The schedule is intentionally documented but not enabled in this repo, because real daily runs can consume Gemini, OpenWeatherMap, and Telegram API quota.
+
+## Portfolio Message
+
+This repo should communicate three things to an interviewer:
+
+1. It is an AI automation workflow, not only a prompt demo.
+2. It has real visual outputs and Telegram delivery evidence.
+3. It includes CI and tests, so the workflow is treated as software rather than one-off content generation.
+
+## Next Steps
+
+- Add a Dockerfile for easier cloud reproduction.
+- Add a workflow diagram for data, AI generation, render, and delivery layers.
+- Write a 60-second interview script focused on AI automation workflow design.
 
 ## License
 
 MIT
-
