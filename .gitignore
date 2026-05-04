@@ -4,8 +4,9 @@
 # ── 生成輸出（每日圖片、lock、工作報告）──
 output/
 
-# ── API 快取（本機暫存）──
-cache/
+# ── API 快取（本機暫存）— festivals.json 為靜態資料需追蹤 ──
+cache/*
+!cache/festivals.json
 
 # ── Python 編譯快取 ──
 __pycache__/
