@@ -10,6 +10,7 @@ import asyncio
 import json
 import os
 import re
+from pathlib import Path
 
 from dotenv import load_dotenv
 from google import genai
@@ -20,29 +21,10 @@ load_dotenv(override=True)
 MUSIC_MOODS = ["energetic", "chill", "romantic", "upbeat", "dramatic"]
 _MODEL = "gemini-2.5-flash-lite"
 
-SYSTEM_PROMPT = """\
-你是一位專業男裝造型師，擅長為不同膚色的男生設計實用配色穿搭。
-請根據提供的天氣與趨勢，生成 2 組夏季配色方案。
-每組必須：
-1. 配色協調，閉眼穿不踩雷
-2. 適合當日氣溫（短袖短褲為主）
-3. photo_prompt 用英文描述，供 AI 生成無臉人物穿搭照使用"""
-
-USER_PROMPT_TEMPLATE = """\
-請根據以下資訊，生成 2 組夏季男生配色穿搭：
-
-- 城市：{city}
-- 氣溫：{temperature}°C
-- 天氣：{condition}
-- 今日節慶：{festival}
-- 流行趨勢：{trends}
-
-每組需包含：
-- style_tag：2-4 字中文風格標籤（如「街頭休閒」）
-- top / bottom / shoes：各含 hex（#RRGGBB）、name（中文顏色名）、type（單品類型，如短袖T恤）
-- photo_prompt：英文描述，格式：\"back view of young male, wearing [color] [type], [color] [type], [color] sneakers, plain light wall background, full body, street fashion\"
-- caption：50 字以內中文文案，含 2-3 個 hashtag（只寫一次，放在第一組即可，其餘為空字串）
-- music_mood：energetic / chill / romantic / upbeat / dramatic 之一（只在第一組填，其餘空字串）"""
+# 提示詞已抽離為獨立外部檔案（內容 100% 等價），於模組載入時讀取。
+_PROMPTS_DIR = Path(__file__).resolve().parents[2] / "prompts"
+SYSTEM_PROMPT = open(_PROMPTS_DIR / "男裝造型師_系統.txt", "r", encoding="utf-8").read()
+USER_PROMPT_TEMPLATE = open(_PROMPTS_DIR / "男裝造型師_用戶模板.txt", "r", encoding="utf-8").read()
 
 # ── Gemini JSON Schema ────────────────────────────────────────────────────────
 

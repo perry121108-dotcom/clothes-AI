@@ -26,6 +26,11 @@ _IMG_MODEL  = "gemini-2.5-flash-image"
 CARD_WIDTH  = 1080
 CARD_HEIGHT = 1920
 
+# 圖像生成模板已抽離為獨立外部檔案（內容 100% 等價），於模組載入時讀取。
+_PROMPTS_DIR = Path(__file__).resolve().parents[2] / "prompts"
+_COLOR_CARD_TEMPLATE = open(_PROMPTS_DIR / "服裝色卡模板.txt", "r", encoding="utf-8").read()
+_OUTFIT_PHOTO_TEMPLATE = open(_PROMPTS_DIR / "穿搭照模板.txt", "r", encoding="utf-8").read()
+
 
 # ── 顏色工具 ──────────────────────────────────────────────────────────────────
 
@@ -46,16 +51,10 @@ def build_color_card_prompt(group: dict) -> str:
     top    = group["top"]
     bottom = group["bottom"]
     shoes  = group["shoes"]
-    return (
-        "A minimalist graphic design of a color palette card. "
-        "It features three clean, horizontal rectangular bars of color, "
-        "arranged vertically and filling most of the frame. "
-        f"Top bar: {top['name']} ({top['hex']}). "
-        f"Middle bar: {bottom['name']} ({bottom['hex']}). "
-        f"Bottom bar: {shoes['name']} ({shoes['hex']}). "
-        "The background is a neutral off-white (#F7F5F2). "
-        "Professional, flat graphic design style. No text, no labels, no shadows. "
-        "Clean edges between bars. 9:16 portrait orientation."
+    return _COLOR_CARD_TEMPLATE.format(
+        top_name=top["name"], top_hex=top["hex"],
+        bottom_name=bottom["name"], bottom_hex=bottom["hex"],
+        shoes_name=shoes["name"], shoes_hex=shoes["hex"],
     )
 
 
@@ -67,18 +66,10 @@ def build_outfit_photo_prompt(group: dict) -> str:
     top    = group["top"]
     bottom = group["bottom"]
     shoes  = group["shoes"]
-    return (
-        "A professional full-body studio photograph of an all-white minimalist mannequin "
-        "(smooth featureless form, no facial features, no hair). "
-        "The mannequin is in a relaxed standing pose, hands in pockets, head slightly bowed. "
-        f"Outfit details: "
-        f"An oversized {top['name']} short-sleeve {top['type']} ({top['hex']}), "
-        f"{bottom['name']} {bottom['type']} ({bottom['hex']}), "
-        "white crew socks, "
-        f"and {shoes['name']} retro {shoes['type']} ({shoes['hex']}). "
-        "Background: A simple, clean, neutral-toned studio wall and a smooth light grey floor. "
-        "High-quality studio lighting, sharp focus on fabric textures and colors. "
-        "9:16 portrait orientation, full body visible from head to toe."
+    return _OUTFIT_PHOTO_TEMPLATE.format(
+        top_name=top["name"], top_type=top["type"], top_hex=top["hex"],
+        bottom_name=bottom["name"], bottom_type=bottom["type"], bottom_hex=bottom["hex"],
+        shoes_name=shoes["name"], shoes_type=shoes["type"], shoes_hex=shoes["hex"],
     )
 
 

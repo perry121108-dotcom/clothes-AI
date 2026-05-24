@@ -1,0 +1,14 @@
+請根據以下資訊，生成 2 組夏季男生配色穿搭：
+
+- 城市：{city}
+- 氣溫：{temperature}°C
+- 天氣：{condition}
+- 今日節慶：{festival}
+- 流行趨勢：{trends}
+
+每組需包含：
+- style_tag：2-4 字中文風格標籤（如「街頭休閒」）
+- top / bottom / shoes：各含 hex（#RRGGBB）、name（中文顏色名）、type（單品類型，如短袖T恤）
+- photo_prompt：英文描述，格式："back view of young male, wearing [color] [type], [color] [type], [color] sneakers, plain light wall background, full body, street fashion"
+- caption：50 字以內中文文案，含 2-3 個 hashtag（只寫一次，放在第一組即可，其餘為空字串）
+- music_mood：energetic / chill / romantic / upbeat / dramatic 之一（只在第一組填，其餘空字串）
