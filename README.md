@@ -118,6 +118,26 @@ clothes-AI/
 
 ---
 
+## 🧩 提示詞外部化治理架構 / Prompt Externalization
+
+本專案已將**所有核心 LLM 提示詞**從 Python 程式碼解耦，集中存放於 `prompts/` 目錄下的獨立 `.txt` 檔，與正式業務程式碼完全分離。
+
+| 提示詞檔 | 角色 | 由何處動態載入 |
+|---------|------|---------------|
+| `prompts/男裝造型師_系統.txt` | 男裝造型師 System Prompt | `src/brain_layer/outfit_generator.py` |
+| `prompts/男裝造型師_用戶模板.txt` | 配色生成 User Prompt 模板 | `src/brain_layer/outfit_generator.py` |
+| `prompts/服裝色卡模板.txt` | 色卡圖像生成模板 | `src/render_layer/outfit_photo_generator.py` |
+| `prompts/穿搭照模板.txt` | AI 模特穿搭照生成模板 | `src/render_layer/outfit_photo_generator.py` |
+
+各檔於模組載入時以 `open(..., 'r', encoding='utf-8').read()` 動態讀入，並以 `{變數}` 佔位符配合 `str.format()` 回填動態內容。
+
+**核心價值 —— AI 大腦與程式碼解耦：**
+
+- 開發者或 AI 代理可**直接修改 `.txt` 文本**來迭代造型師的配色邏輯、圖像生成風格與文案語氣，**無須更動任何 `.py` 業務程式碼**。
+- 提示詞文字與程式邏輯分離後，可獨立版本控制、審查與回歸測試，避免長字串散落在函式中形成技術債。
+
+---
+
 ## 快速開始 / Setup
 
 ```bash
