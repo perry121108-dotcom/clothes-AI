@@ -62,6 +62,24 @@ _RESPONSE_SCHEMA = types.Schema(
 )
 
 _HEX_RE = re.compile(r"^#([0-9A-Fa-f]{6})$")
+_FENCE_RE = re.compile(r"^```(?:json)?\s*(.*?)\s*```$", re.DOTALL)
+
+
+def _extract_json(raw: str) -> str:
+    """容錯解析：去除 ```json 圍欄與 JSON 前後多餘文字，回傳純 JSON 字串。
+
+    對應 SKILL.md 5.1（解析端須對模型多包的圍欄/多餘文字容錯）。
+    回歸測試：BUG-LLM-001（圍欄）、BUG-LLM-002（多餘文字）。
+    """
+    text = raw.strip()
+    fence = _FENCE_RE.match(text)
+    if fence:
+        text = fence.group(1).strip()
+    if not text.startswith("{"):
+        start, end = text.find("{"), text.rfind("}")
+        if start != -1 and end != -1 and end > start:
+            text = text[start:end + 1]
+    return text
 
 
 # ── 例外 ──────────────────────────────────────────────────────────────────────
@@ -152,7 +170,7 @@ async def generate_outfit(
             if not raw:
                 raise SchemaValidationError("Gemini 回應為空")
 
-            data = json.loads(raw)
+            data = json.loads(_extract_json(raw))
             _validate(data)
             return data
 

@@ -99,16 +99,14 @@ class TestSchemaRobustness:
         result = await _run_generate(json.dumps(VALID_OUTFIT), trends=[f"trend-{i}" for i in range(1000)])
         assert len(result["groups"]) == 2
 
-    @pytest.mark.xfail(strict=True, reason="BUG-LLM-001: 解析端未對 ```json 圍欄容錯（SKILL.md 5.1）。修復後本測試應轉綠並移除 xfail。")
     async def test_tolerates_json_code_fence(self):
-        """模型多包 ```json 圍欄時應仍能解析（目前 RED）。"""
+        """回歸 BUG-LLM-001：模型多包 ```json 圍欄時仍能解析（已修復轉綠）。"""
         fenced = "```json\n" + json.dumps(VALID_OUTFIT) + "\n```"
         result = await _run_generate(fenced)
         assert len(result["groups"]) == 2
 
-    @pytest.mark.xfail(strict=True, reason="BUG-LLM-002: 解析端未對 JSON 前後多餘文字容錯（SKILL.md 5.1）。修復後本測試應轉綠並移除 xfail。")
     async def test_tolerates_extra_surrounding_text(self):
-        """模型在 JSON 前後多包說明文字時應仍能擷取解析（目前 RED）。"""
+        """回歸 BUG-LLM-002：模型在 JSON 前後多包說明文字時仍能擷取解析（已修復轉綠）。"""
         noisy = "Here is your result:\n" + json.dumps(VALID_OUTFIT) + "\nHope it helps!"
         result = await _run_generate(noisy)
         assert len(result["groups"]) == 2
